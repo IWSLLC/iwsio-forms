@@ -1,8 +1,9 @@
-import { forwardRef, ChangeEventHandler } from 'react'
-import { Input, InputProps, Ref } from './Input'
-import { useFieldManager } from './useFieldManager'
-import { useForwardRef } from './useForwardRef'
-import { FieldChangeEventHandler } from './types'
+import { ChangeEventHandler, forwardRef } from 'react'
+
+import { Input, InputProps, Ref } from './Input.js'
+import { FieldChangeEventHandler, FieldErrorHandler } from './types.js'
+import { useFieldManager } from './useFieldManager.js'
+import { useForwardRef } from './useForwardRef.js'
 
 export type InputFieldProps = Omit<InputProps, 'DefaultValue' | 'onChange'> & { onChange?: FieldChangeEventHandler }
 
@@ -15,7 +16,7 @@ export const InputField = forwardRef<Ref, InputFieldProps>(({ type = 'text', nam
 		if (onChange != null) onChange(result)
 	}
 
-	const handleFieldError = (key, validity, message) => {
+	const handleFieldError: FieldErrorHandler = (key, validity, message) => {
 		const mappedError = mapError(validity, message)
 		setFieldError(key, mappedError, validity)
 	}

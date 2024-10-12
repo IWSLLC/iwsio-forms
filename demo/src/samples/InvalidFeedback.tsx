@@ -1,4 +1,5 @@
-import { ControlledFieldManager, ErrorMapping, FieldChangeEventHandler, FieldManager, InputField, InvalidFeedbackForField, useFieldManager, useFieldState } from '@iwsio/forms'
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import { ControlledFieldManager, ErrorMapping, FieldChangeEventHandler, FieldValues, InputField, InvalidFeedbackForField, useFieldManager, useFieldState } from '@iwsio/forms'
 import { FC, useState } from 'react'
 
 // NOTE: leaving customError excluded so they report directly as-is.
@@ -49,7 +50,7 @@ export const Field: FC<{ name: string }> = ({ name }) => {
 				</div>
 				<label className="label">
 					<span className="label-text-alt">
-						Text input with onChange custom valdiation; Required value:
+						Text input with onChange custom validation; Required value:
 						<code>number &gt; 1 and &lt; 100, step: 1</code>
 					</span>
 				</label>
@@ -124,7 +125,7 @@ export const InvalidFeedbackDemo = () => {
 		// happens before validation
 		setSuccess(false)
 	}
-	const handleValidSubmit = (_fields: any) => {
+	const handleValidSubmit = (_fields: FieldValues) => {
 		// happens after validation and when valid
 		setSuccess(true)
 	}

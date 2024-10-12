@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ValidatedForm } from './ValidatedForm'
+
+import { ValidatedForm } from './ValidatedForm.js'
 
 describe('ValidatedForm', () => {
 	it('should call onSubmit always and onValidSubmit when valid; should set proper css classes', async () => {

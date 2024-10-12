@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { FieldManagerWrapper } from './__tests__/FieldManagerWrapper'
-import { InputField } from './InputField'
-import { InvalidFeedbackForField } from './InvalidFeedbackForField'
 import userEvent from '@testing-library/user-event'
+
+import { FieldManagerWrapper } from './__tests__/FieldManagerWrapper.js'
+import { InputField } from './InputField.js'
+import { InvalidFeedbackForField } from './InvalidFeedbackForField.js'
 
 describe('InvalidFeedbackForField', () => {
 	it('should render nothing without an error and with report validation off', async () => {

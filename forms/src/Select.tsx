@@ -1,6 +1,7 @@
-import { ChangeEventHandler, PropsWithChildren, SelectHTMLAttributes, forwardRef, useEffect } from 'react'
-import { ValidationProps } from './types'
-import { useForwardRef } from './useForwardRef'
+import { ChangeEventHandler, FormEventHandler, forwardRef, PropsWithChildren, SelectHTMLAttributes, useCallback, useEffect } from 'react'
+
+import { ValidationProps } from './types.js'
+import { useForwardRef } from './useForwardRef.js'
 
 export type SelectProps = PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement>> & ValidationProps
 
@@ -9,9 +10,9 @@ export type Ref = HTMLSelectElement
 export const Select = forwardRef<Ref, SelectProps>(({ onFieldError, onInvalid, fieldError, name, onChange, value, children, ...other }, ref) => {
 	const localRef = useForwardRef<Ref>(ref)
 
-	const localSetError = (message?: string) => {
+	const localSetError = useCallback((message?: string) => {
 		if (onFieldError != null) onFieldError(name, localRef.current.validity, message)
-	}
+	}, [localRef, name, onFieldError])
 
 	const localOnChange: ChangeEventHandler<Ref> = (e) => {
 		localSetError(undefined)
@@ -20,21 +21,22 @@ export const Select = forwardRef<Ref, SelectProps>(({ onFieldError, onInvalid, f
 		if (!localRef.current.validity.valid) localSetError(localRef.current.validationMessage)
 	}
 
-	const handleInvalid = (e) => {
-		localSetError(e.target.validationMessage)
+	const handleInvalid: FormEventHandler<HTMLSelectElement> = (e) => {
+		const target = e.target as HTMLSelectElement
+		localSetError(target.validationMessage)
 		if (onInvalid != null) onInvalid(e)
 	}
 
 	useEffect(() => {
 		if (!localRef.current.validity.valid) localSetError(localRef.current.validationMessage)
-	}, [])
+	}, [localRef, localSetError])
 
 	useEffect(() => {
 		if (fieldError == null) return localRef.current.setCustomValidity('')
 		if (fieldError.validity?.customError && fieldError.message !== localRef.current.validationMessage) {
 			localRef.current.setCustomValidity(fieldError.message || '')
 		}
-	}, [fieldError])
+	}, [fieldError, localRef])
 
 	return (
 		<select

@@ -1,5 +1,6 @@
-import { FormEventHandler, FormHTMLAttributes, PropsWithChildren, forwardRef, useMemo, useState } from 'react'
-import { useForwardRef } from './useForwardRef'
+import { FormEventHandler, FormHTMLAttributes, forwardRef, PropsWithChildren, useMemo, useState } from 'react'
+
+import { useForwardRef } from './useForwardRef.js'
 
 export type ValidatedFormProps = PropsWithChildren<{
 	/**
