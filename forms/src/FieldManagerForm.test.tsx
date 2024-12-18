@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { FieldManagerForm } from './FieldManagerForm'
-import * as useFieldManager from './useFieldManager'
+
+import { FieldManagerForm } from './FieldManagerForm.js'
+import * as useFieldManager from './useFieldManager.js'
 
 vi.mock('./useFieldManager')
 

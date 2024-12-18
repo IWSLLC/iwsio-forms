@@ -1,7 +1,8 @@
 import { forwardRef } from 'react'
-import { useFieldManager } from './useFieldManager'
-import { ValidatedForm, ValidatedFormProps } from './ValidatedForm'
-import { FieldValues } from './types'
+
+import { FieldValues } from './types.js'
+import { useFieldManager } from './useFieldManager.js'
+import { ValidatedForm, ValidatedFormProps } from './ValidatedForm.js'
 
 export type FieldManagerFormProps = Omit<ValidatedFormProps, 'onValidSubmit' | 'noValidate'> & {
 	/**

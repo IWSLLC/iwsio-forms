@@ -2,9 +2,11 @@ import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 export type FieldError = { message: string | undefined, validity?: ValidityState | undefined }
 
+export type FieldErrorHandler = (key: string, validity: ValidityState, message?: string) => void
+
 export type ValidationProps = {
 	fieldError?: FieldError
-	onFieldError?: (key: string, validity: ValidityState, message?: string) => void
+	onFieldError?: FieldErrorHandler
 }
 
 export type FieldValues = Record<string, string>

@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
-import { defaults } from './defaults'
-import { omitBy } from './omitBy'
-import { FieldError, FieldStateChangeEventHandler, FieldValues, UseFieldStateResult } from './types'
-import { ErrorMapping, useErrorMapping } from './useErrorMapping'
-import { emptyValidity } from './validityState'
+
+import { assignNonNullish } from './assignNonNullish.js'
+import { FieldError, FieldStateChangeEventHandler, FieldValues, UseFieldStateResult } from './types.js'
+import { ErrorMapping, useErrorMapping } from './useErrorMapping.js'
+import { emptyValidity } from './validityState.js'
 
 export type UseFieldStateMethod = (
 	/**
@@ -27,7 +27,7 @@ export type UseFieldStateMethod = (
  */
 export const useFieldState: UseFieldStateMethod = (fields, options = {}) => {
 	const { defaultValues, errorMapping } = options
-	const initDefaultFieldValues = defaultValues != null ? defaults(omitBy(fields, v => v == null || v === ''), defaultValues) : fields
+	const initDefaultFieldValues = defaultValues != null ? assignNonNullish(fields, defaultValues) : fields
 
 	const [reportValidation, setReportValidation] = useState(false)
 	const [fieldValues, setFieldValues] = useState<FieldValues>(fields)
@@ -41,10 +41,20 @@ export const useFieldState: UseFieldStateMethod = (fields, options = {}) => {
 		setIsFormBusy(_old => value)
 	}, [])
 
+	const setFieldError = useCallback((key: string, message?: string, validity?: ValidityState) => {
+		let _validity: ValidityState
+		const hasMessage = message != null && message.trim().length > 0
+
+		if (hasMessage) {
+			_validity = validity ?? { ...emptyValidity, customError: true }
+		}
+		setFieldErrors(old => ({ ...old, [key]: !hasMessage ? undefined : { message, validity: _validity } }))
+	}, [])
+
 	const setField = useCallback((key: string, value: string) => {
 		setFieldValues(oldFields => ({ ...oldFields, [key]: value }))
 		setFieldError(key, undefined) // clear this error if one exists.
-	}, [])
+	}, [setFieldError])
 
 	const setFields = useCallback((values: Partial<FieldValues>) => {
 		setFieldValues((oldFields) => {
@@ -64,23 +74,13 @@ export const useFieldState: UseFieldStateMethod = (fields, options = {}) => {
 		})
 	}, [])
 
-	const setFieldError = useCallback((key: string, message?: string, validity?: ValidityState) => {
-		let _validity: ValidityState
-		const hasMessage = message != null && message.trim().length > 0
-
-		if (hasMessage) {
-			_validity = validity ?? { ...emptyValidity, customError: true }
-		}
-		setFieldErrors(old => ({ ...old, [key]: !hasMessage ? undefined : { message, validity: _validity } }))
-	}, [errorMapping])
-
 	const checkFieldError = useCallback((key: string): string | undefined => {
 		let fieldError: FieldError | undefined = undefined
 		if (reportValidation && fieldErrors[key] != null && fieldErrors[key].message !== '') fieldError = fieldErrors[key]
 
 		if (fieldError == null) return undefined
 		return mapError(fieldError.validity, fieldError.message)
-	}, [fieldErrors, reportValidation, mapError, fieldValues])
+	}, [fieldErrors, reportValidation, mapError])
 
 	const reset = useCallback(() => {
 		setFieldErrors(_old => ({}))

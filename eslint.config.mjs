@@ -2,8 +2,14 @@ import eslint from '@eslint/js'
 import stylistic from '@stylistic/eslint-plugin'
 import promisePlugin from 'eslint-plugin-promise'
 import reactPlugin from 'eslint-plugin-react'
+import tailwind from 'eslint-plugin-tailwindcss'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
+
+import jsxA11y from './lint-config/eslint-plugin-jsx-a11y.mjs'
+import eslintPluginReactHooks from './lint-config/eslint-plugin-react-hooks.mjs'
+import reactRefreshConfig from './lint-config/eslint-plugin-react-refresh.mjs'
+import sort from './lint-config/eslint-plugin-simple-import-sort.mjs'
 
 export default [
 	...tseslint.config(
@@ -13,6 +19,10 @@ export default [
 		// all projects:
 		eslint.configs.recommended,
 		...tseslint.configs.recommended,
+		...jsxA11y,
+		eslintPluginReactHooks,
+		reactRefreshConfig,
+
 		stylistic.configs.customize({
 			braceStyle: '1tbs',
 			commaDangle: 'never',
@@ -21,6 +31,11 @@ export default [
 			quotes: 'single',
 			semi: false
 		}),
+
+		sort,
+
+		...tailwind.configs['flat/recommended'],
+
 		{
 			plugins: {
 				promise: promisePlugin,
@@ -42,13 +57,21 @@ export default [
 				// custom rules here
 				'promise/always-return': ['error', { ignoreLastCallback: true }],
 
+				'tailwindcss/no-custom-classname': 'off',
+
 				'@typescript-eslint/no-explicit-any': 'off',
 				'@typescript-eslint/no-unused-vars': ['error', {
 					argsIgnorePattern: '^_',
 					varsIgnorePattern: '^_',
 					destructuredArrayIgnorePattern: '^_',
 					caughtErrorsIgnorePattern: '^_'
-				}]
+				}],
+				'no-useless-rename': ['error', {
+					ignoreDestructuring: false,
+					ignoreImport: false,
+					ignoreExport: false
+				}],
+				'object-shorthand': ['error', 'always']
 			},
 
 			settings: {
@@ -57,13 +80,20 @@ export default [
 				}
 			}
 		},
+
+		// testing rules
 		{
-			files: ['**/*.test.ts', '**/*.test.tsx', '**/*.test.mts', '**/*.test.cts', '**/*.test.js'],
-			plugins: {
-				'@stylistic': stylistic
-			},
+			files: ['**/*.test.ts', '**/*.test.tsx', '**/*.test.mts', '**/*.test.cts', '**/__tests__/**/*', '**/__mocks__/**/*'],
 			rules: {
-				'@stylistic/max-statements-per-line': 'off'
+				'@typescript-eslint/no-unused-expressions': 'off',
+				'@stylistic/max-statements-per-line': ['error', { max: 2 }]
+			}
+		},
+		// configuration rules
+		{
+			files: ['**/*.config.*'],
+			rules: {
+				'@typescript-eslint/no-require-imports': 'off'
 			}
 		}
 	)

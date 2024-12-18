@@ -1,8 +1,9 @@
 import { ChangeEventHandler, forwardRef } from 'react'
-import { Ref, TextArea, TextAreaProps } from './TextArea'
-import { FieldChangeEventHandler } from './types'
-import { useFieldManager } from './useFieldManager'
-import { useForwardRef } from './useForwardRef'
+
+import { Ref, TextArea, TextAreaProps } from './TextArea.js'
+import { FieldChangeEventHandler, FieldErrorHandler } from './types.js'
+import { useFieldManager } from './useFieldManager.js'
+import { useForwardRef } from './useForwardRef.js'
 
 export type TextAreaFieldProps = Omit<TextAreaProps, 'DefaultValue' | 'onChange'> & { onChange?: FieldChangeEventHandler }
 
@@ -15,7 +16,7 @@ export const TextAreaField = forwardRef<Ref, Omit<TextAreaFieldProps, 'DefaultVa
 		const result = managerOnChange(e)
 		if (onChange != null) onChange(result)
 	}
-	const handleFieldError = (key, validity, message) => {
+	const handleFieldError: FieldErrorHandler = (key, validity, message) => {
 		const mappedError = mapError(validity, message)
 		setFieldError(key, mappedError, validity)
 	}

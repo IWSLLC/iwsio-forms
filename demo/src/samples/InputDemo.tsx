@@ -1,5 +1,5 @@
-import { ChangeEventHandler, useRef, useState } from 'react'
 import { FieldError, Input } from '@iwsio/forms'
+import { ChangeEventHandler, FormEventHandler, useRef, useState } from 'react'
 
 export const InputDemo = () => {
 	const refForm = useRef<HTMLFormElement>(null)
@@ -15,7 +15,7 @@ export const InputDemo = () => {
 	}
 
 	// validation is handled automatically with form submit event.
-	const handleSubmit = (e) => {
+	const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault()
 		setSuccess(true)
 	}
@@ -34,7 +34,7 @@ export const InputDemo = () => {
 	}
 
 	return (
-		<form className="flex flex-col gap-4 not-prose" onSubmit={handleSubmit} ref={refForm}>
+		<form className="not-prose flex flex-col gap-4" onSubmit={handleSubmit} ref={refForm}>
 			<div className="flex flex-row">
 				<table className="table">
 					<thead>
@@ -78,7 +78,7 @@ export const InputDemo = () => {
 				<button type="submit" className={`btn ${success ? 'btn-success' : 'btn-primary'}`}>Submit</button>
 
 				{/* Intentionally hidden; just an example of using button click handler to validate the form. */}
-				<button type="button" onClick={handleButton} className={`hidden btn ${success ? 'btn-success' : 'btn-primary'}`}>Manual check</button>
+				<button type="button" onClick={handleButton} className={`btn hidden ${success ? 'btn-success' : 'btn-primary'}`}>Manual check</button>
 			</p>
 		</form>
 	)

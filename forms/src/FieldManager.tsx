@@ -1,10 +1,11 @@
-import { PropsWithChildren, forwardRef } from 'react'
-import { FieldManagerContext } from './FieldManagerContext'
-import { useFieldState } from './useFieldState'
-import { FieldManagerForm } from './FieldManagerForm'
-import { ValidatedFormProps } from './ValidatedForm'
-import { FieldValues } from './types'
-import { ErrorMapping } from './useErrorMapping'
+import { forwardRef, PropsWithChildren } from 'react'
+
+import { FieldManagerContext } from './FieldManagerContext.js'
+import { FieldManagerForm } from './FieldManagerForm.js'
+import { FieldValues } from './types.js'
+import { ErrorMapping } from './useErrorMapping.js'
+import { useFieldState } from './useFieldState.js'
+import { ValidatedFormProps } from './ValidatedForm.js'
 
 export type FieldManagerProps = Omit<ValidatedFormProps, 'onValidSubmit' | 'noValidate'> &
 	PropsWithChildren<{

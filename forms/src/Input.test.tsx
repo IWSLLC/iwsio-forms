@@ -1,9 +1,10 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
-import { FieldError, useFieldState } from '.'
-import { FieldManagerWrapper } from './__tests__/FieldManagerWrapper'
-import { Input } from './Input'
+
+import { FieldError, useFieldState } from '..js'
+import { FieldManagerWrapper } from './__tests__/FieldManagerWrapper.js'
+import { Input } from './Input.js'
 
 const ControlledInput = () => {
 	const [value, setValue] = useState('')

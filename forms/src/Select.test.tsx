@@ -1,8 +1,9 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
-import { Select } from './Select'
-import { FieldError } from './types'
+
+import { Select } from './Select.js'
+import { FieldError } from './types.js'
 
 const ControlledSelect = () => {
 	const [value, setValue] = useState('')

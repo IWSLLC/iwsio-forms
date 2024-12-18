@@ -1,8 +1,9 @@
 import { forwardRef } from 'react'
-import { FieldManagerProps } from './FieldManager'
-import { FieldManagerContext } from './FieldManagerContext'
-import { FieldManagerForm } from './FieldManagerForm'
-import { useFieldState } from './useFieldState'
+
+import { FieldManagerProps } from './FieldManager.js'
+import { FieldManagerContext } from './FieldManagerContext.js'
+import { FieldManagerForm } from './FieldManagerForm.js'
+import { useFieldState } from './useFieldState.js'
 
 export type ControlledFieldManagerProps = Omit<FieldManagerProps, 'fields' | 'defaultValues'> & { fieldState: ReturnType<typeof useFieldState> }
 

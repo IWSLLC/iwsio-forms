@@ -1,5 +1,6 @@
 import { FC, HTMLAttributes } from 'react'
-import { useFieldManager } from './useFieldManager'
+
+import { useFieldManager } from './useFieldManager.js'
 
 export type InvalidFeedbackForFieldProps = {
 	name: string
